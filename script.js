@@ -159,6 +159,7 @@ function agregarAlCarrito(productoId) {
 
     actualizarCarrito();
     mostrarNotificacion(`${producto.nombre} agregado al carrito`);
+    guardarCarritoLocalStorage();
 }
 
 // Función para agregar un combo al carrito
@@ -214,10 +215,14 @@ function actualizarCarrito() {
         itemElement.innerHTML = `
             <div class="item-info">
                 <span class="item-nombre">${item.nombre}</span>
-                <span class="item-cantidad">Cantidad: ${item.cantidad}</span>
+                <div class="item-cantidad-control">
+                    <button onclick="editarProductoCarrito(${item.id}, ${item.cantidad - 1})" class="btn-cantidad" aria-label="Disminuir cantidad">-</button>
+                    <span class="item-cantidad">${item.cantidad}</span>
+                    <button onclick="editarProductoCarrito(${item.id}, ${item.cantidad + 1})" class="btn-cantidad" aria-label="Aumentar cantidad">+</button>
+                </div>
             </div>
             <span class="item-precio">$${item.precio * item.cantidad}</span>
-            <button onclick="eliminarDelCarrito(${item.id})" class="btn-eliminar">
+            <button onclick="eliminarDelCarrito(${item.id})" class="btn-eliminar" aria-label="Eliminar producto">
                 <span class="icon">🗑️</span>
             </button>
         `;
@@ -232,6 +237,8 @@ function actualizarCarrito() {
     if (tiempoMaxPreparacion > 0) {
         document.getElementById('tiempo-preparacion').textContent = tiempoMaxPreparacion;
     }
+    
+    guardarCarritoLocalStorage(); // También agregar esta línea al final
 }
 
 // Función para eliminar items del carrito
@@ -243,6 +250,16 @@ function eliminarDelCarrito(id) {
         } else {
             carrito.splice(index, 1);
         }
+        actualizarCarrito();
+        actualizarContadorItems();
+    }
+}
+
+// Función de edicion
+function editarProductoCarrito(id, nuevaCantidad) {
+    const item = carrito.find(item => item.id === id);
+    if (item && nuevaCantidad > 0) {
+        item.cantidad = nuevaCantidad;
         actualizarCarrito();
         actualizarContadorItems();
     }
@@ -286,18 +303,31 @@ document.getElementById('form-pedido').addEventListener('submit', function(e) {
     }
     
     const formulario = this;
-    const nombre = document.getElementById('nombreCliente').value;
+    const nombre = document.getElementById('nombreCliente').value.trim();
     const hora = document.getElementById('horaRetiro').value;
     
-    // Calcular tiempo máximo de preparación
-    const tiempoMaxPreparacion = Math.max(...carrito.map(item => item.tiempo));
+    // Validar nombre (mínimo 2 caracteres, solo letras)
+    if (nombre.length < 2 || !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(nombre)) {
+        mostrarNotificacion('Por favor ingresa un nombre válido');
+        return;
+    }
     
-    // Validar que la hora de retiro sea posterior al tiempo de preparación
+    // Validar horario de atención
     const horaActual = new Date();
     const horaRetiro = new Date();
     const [horas, minutos] = hora.split(':');
     horaRetiro.setHours(horas, minutos);
     
+    // Verificar horarios de atención (7:00 - 20:00)
+    if (horas < 7 || horas >= 20) {
+        mostrarNotificacion('Nuestro horario de atención es de 7:00 a 20:00');
+        return;
+    }
+    
+    // Calcular tiempo máximo de preparación
+    const tiempoMaxPreparacion = Math.max(...carrito.map(item => item.tiempo));
+    
+    // Validar que la hora de retiro sea posterior al tiempo de preparación
     const tiempoMinimo = new Date(horaActual.getTime() + tiempoMaxPreparacion * 60000);
     
     if (horaRetiro < tiempoMinimo) {
@@ -307,6 +337,15 @@ document.getElementById('form-pedido').addEventListener('submit', function(e) {
     
     // Mostrar confirmación y limpiar carrito
     mostrarConfirmacion(nombre, hora, tiempoMaxPreparacion);
+    
+    // Guardar en historial
+    guardarPedidoHistorial({
+        nombre: nombre,
+        hora: hora,
+        items: [...carrito],
+        total: carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0)
+    });
+    
     vaciarCarrito();
     
     // Limpiar el formulario
@@ -314,20 +353,66 @@ document.getElementById('form-pedido').addEventListener('submit', function(e) {
 });
 
 // Función para mostrar notificaciones
-function mostrarNotificacion(mensaje) {
+function mostrarNotificacion(mensaje, tipo = 'info', duracion = 3000) {
     const notificacion = document.createElement('div');
-    notificacion.className = 'notificacion';
-    notificacion.textContent = mensaje;
+    notificacion.className = `notificacion notificacion-${tipo}`;
+    notificacion.innerHTML = `
+        <span class="notificacion-icono">${getIconoNotificacion(tipo)}</span>
+        <span class="notificacion-mensaje">${mensaje}</span>
+        <button class="notificacion-cerrar" onclick="this.parentElement.remove()">×</button>
+    `;
+    
     document.body.appendChild(notificacion);
-
-    // Removemos la notificación después de 3 segundos
+    
     setTimeout(() => {
-        notificacion.remove();
-    }, 3000);
+        if (notificacion.parentElement) {
+            notificacion.remove();
+        }
+    }, duracion);
+}
+
+function getIconoNotificacion(tipo) {
+    const iconos = {
+        'info': 'ℹ️',
+        'success': '✅',
+        'warning': '⚠️',
+        'error': '❌'
+    };
+    return iconos[tipo] || iconos.info;
+}
+
+function guardarCarritoLocalStorage() {
+    localStorage.setItem('tafe-carrito', JSON.stringify(carrito));
+}
+
+function cargarCarritoLocalStorage() {
+    const carritoGuardado = localStorage.getItem('tafe-carrito');
+    if (carritoGuardado) {
+        carrito = JSON.parse(carritoGuardado);
+        actualizarCarrito();
+        actualizarContadorItems();
+    }
+}
+
+function guardarPedidoHistorial(pedido) {
+    let historial = JSON.parse(localStorage.getItem('tafe-historial')) || [];
+    historial.unshift({
+        ...pedido,
+        fecha: new Date().toISOString(),
+        id: Date.now()
+    });
+    
+    // Mantener solo los últimos 10 pedidos
+    if (historial.length > 10) {
+        historial = historial.slice(0, 10);
+    }
+    
+    localStorage.setItem('tafe-historial', JSON.stringify(historial));
 }
 
 // Inicializar la vista de productos y el contador
 document.addEventListener('DOMContentLoaded', () => {
     filtrarProductos('cafe');
+    cargarCarritoLocalStorage(); // Cargar carrito guardado
     actualizarContadorItems();
-}); 
+});

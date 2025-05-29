@@ -1570,3 +1570,93 @@ button:hover {
         font-size: 0.9rem;
     }
 } 
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--color-primario);
+    outline-offset: 2px;
+}
+
+.producto .descripcion {
+    color: #555;
+    line-height: 1.5;
+}
+
+.notificacion {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 1.5rem;
+}
+
+.notificacion-success {
+    background-color: #4CAF50;
+}
+
+.notificacion-warning {
+    background-color: #FF9800;
+}
+
+.notificacion-error {
+    background-color: #F44336;
+}
+
+.notificacion-icono {
+    font-size: 1.2rem;
+}
+
+.notificacion-mensaje {
+    flex-grow: 1;
+}
+
+.notificacion-cerrar {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+}
+
+.item-cantidad-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+}
+
+.btn-cantidad {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--color-fondo);
+    color: var(--color-primario);
+    border: 1px solid var(--color-primario);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.btn-cantidad:hover {
+    background-color: var(--color-primario);
+    color: white;
+}
