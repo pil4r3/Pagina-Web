@@ -7,6 +7,8 @@
     --color-acento: #722F37;
     --sombra-suave: 0 2px 10px rgba(0,0,0,0.1);
     --border-radio: 8px;
+    --tafe-primary: #722F37;
+    --tafe-background: #F5F0EB;
 }
 
 /* Estilos generales */
@@ -19,8 +21,8 @@
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     line-height: 1.6;
-    background-color: var(--color-fondo);
-    color: var(--color-texto);
+    background-color: var(--tafe-background);
+    color: var(--tafe-primary);
 }
 
 /* Header */
@@ -32,8 +34,8 @@ header {
 }
 
 .logo {
-    max-width: 200px;
-    margin: 0 auto 1rem;
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
 .logo h1 {
@@ -45,8 +47,8 @@ header {
 }
 
 .slogan {
-    font-size: 1rem;
     color: var(--color-primario);
+    font-size: 1.2rem;
     text-transform: uppercase;
     letter-spacing: 2px;
     font-weight: 500;
@@ -240,7 +242,7 @@ nav a:hover {
     border-radius: var(--border-radio);
     box-shadow: var(--sombra-suave);
     animation: slideIn 0.3s ease;
-    z-index: 999;
+    z-index: 1000;
 }
 
 @keyframes slideIn {
@@ -301,6 +303,10 @@ nav a:hover {
 
     .logo h1 {
         font-size: 2.5rem;
+    }
+
+    .slogan {
+        font-size: 1rem;
     }
 
     nav ul {
@@ -402,6 +408,18 @@ nav a:hover {
 
     .icono-carrito {
         font-size: 1.6rem;
+    }
+
+    .menu-icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .notificacion {
+        bottom: 1rem;
+        right: 1rem;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
     }
 }
 
@@ -1266,5 +1284,289 @@ nav a:hover {
 
     .icono-carrito {
         font-size: 1.6rem;
+    }
+}
+
+/* Estilos del carrito */
+.carrito-header {
+    border-bottom: 2px solid var(--tafe-primary);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.carrito-header h2 {
+    margin: 0;
+    color: var(--tafe-primary);
+    font-family: 'Georgia', serif;
+    font-size: 2rem;
+}
+
+@media (max-width: 768px) {
+    .carrito-header h2 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Estilos de botones */
+button {
+    background-color: var(--tafe-primary);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* Menú Header */
+.menu-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 0 2rem;
+    position: relative;
+}
+
+.menu-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .logo h1 {
+        font-size: 2.5rem;
+    }
+
+    .slogan {
+        font-size: 1rem;
+    }
+
+    .menu-icon {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* Combinaciones Populares */
+.combos-populares {
+    padding: 4rem 2rem;
+    background-color: var(--color-fondo);
+    text-align: center;
+}
+
+.combos-populares h2 {
+    color: var(--color-primario);
+    font-family: 'Georgia', serif;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 300;
+}
+
+.combos-descripcion {
+    color: var(--color-texto);
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+}
+
+.combos-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.combo-card {
+    background-color: white;
+    border-radius: var(--border-radio);
+    padding: 2rem;
+    box-shadow: var(--sombra-suave);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.combo-card:hover {
+    transform: translateY(-5px);
+}
+
+.combo-card h3 {
+    color: var(--color-primario);
+    font-size: 1.5rem;
+    margin: 0;
+    font-family: 'Georgia', serif;
+}
+
+.combo-items {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-size: 1.1rem;
+}
+
+.combo-item {
+    color: var(--color-texto);
+    font-weight: 500;
+}
+
+.combo-plus {
+    color: var(--color-primario);
+    font-size: 1.4rem;
+}
+
+.combo-info {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(114, 47, 55, 0.1);
+    border-bottom: 1px solid rgba(114, 47, 55, 0.1);
+}
+
+.combo-tiempo {
+    color: var(--color-texto);
+    font-size: 0.9rem;
+}
+
+.combo-precio {
+    color: var(--color-primario);
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.combo-ahorro {
+    color: #2E7D32;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.combo-card button {
+    background-color: var(--color-primario);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 25px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.combo-card button:hover {
+    background-color: var(--color-secundario);
+}
+
+@media (max-width: 768px) {
+    .combos-populares {
+        padding: 2rem 1rem;
+    }
+
+    .combos-populares h2 {
+        font-size: 2rem;
+    }
+
+    .combo-card {
+        padding: 1.5rem;
+    }
+
+    .combo-items {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .combo-info {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* Pedido Habitual */
+.acciones-carrito {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn-guardar-habitual {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #FFC107;
+    color: #000;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-guardar-habitual:hover {
+    background-color: #FFB300;
+    transform: translateY(-2px);
+}
+
+.pedido-habitual {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(114, 47, 55, 0.1);
+}
+
+.pedido-habitual h3 {
+    color: var(--color-primario);
+    font-family: 'Georgia', serif;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.pedido-habitual-items {
+    background-color: var(--color-fondo);
+    border-radius: var(--border-radio);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.btn-cargar-habitual {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: var(--color-primario);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-cargar-habitual:hover {
+    background-color: var(--color-secundario);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .acciones-carrito {
+        gap: 0.8rem;
+    }
+
+    .btn-guardar-habitual,
+    .btn-cargar-habitual {
+        padding: 0.6rem;
+        font-size: 0.9rem;
     }
 } 

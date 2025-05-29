@@ -110,6 +110,59 @@
         </div>
     </section>
 
+    <!-- Combinaciones Populares -->
+    <section class="combos-populares">
+        <h2>Combos más Pedidos</h2>
+        <p class="combos-descripcion">Las combinaciones favoritas de nuestros clientes</p>
+        
+        <div class="combos-container">
+            <div class="combo-card">
+                <h3>Desayuno Express</h3>
+                <div class="combo-items">
+                    <span class="combo-item">Café</span>
+                    <span class="combo-plus">+</span>
+                    <span class="combo-item">2 Medialunas</span>
+                </div>
+                <div class="combo-info">
+                    <span class="combo-tiempo">⏱️ 5 min</span>
+                    <span class="combo-precio">$900</span>
+                    <span class="combo-ahorro">¡Ahorrás $100!</span>
+                </div>
+                <button onclick="agregarCombo('desayuno')">Pedir Combo</button>
+            </div>
+
+            <div class="combo-card">
+                <h3>Merienda Completa</h3>
+                <div class="combo-items">
+                    <span class="combo-item">Café con Leche</span>
+                    <span class="combo-plus">+</span>
+                    <span class="combo-item">Tostado J&Q</span>
+                </div>
+                <div class="combo-info">
+                    <span class="combo-tiempo">⏱️ 8 min</span>
+                    <span class="combo-precio">$1500</span>
+                    <span class="combo-ahorro">¡Ahorrás $200!</span>
+                </div>
+                <button onclick="agregarCombo('merienda')">Pedir Combo</button>
+            </div>
+
+            <div class="combo-card">
+                <h3>Break Dulce</h3>
+                <div class="combo-items">
+                    <span class="combo-item">Lágrima</span>
+                    <span class="combo-plus">+</span>
+                    <span class="combo-item">Alfajor Artesanal</span>
+                </div>
+                <div class="combo-info">
+                    <span class="combo-tiempo">⏱️ 4 min</span>
+                    <span class="combo-precio">$850</span>
+                    <span class="combo-ahorro">¡Ahorrás $150!</span>
+                </div>
+                <button onclick="agregarCombo('break')">Pedir Combo</button>
+            </div>
+        </div>
+    </section>
+
     <!-- Sección de productos -->
     <main id="productos" class="menu-seccion">
         <div class="menu-header">
@@ -132,10 +185,12 @@
     <!-- Carrito -->
     <section id="carrito" class="carrito-seccion">
         <div class="carrito-contenedor">
-            <h2>Tu Pedido</h2>
+            <div class="carrito-header">
+                <h2>Tu Pedido</h2>
+            </div>
             
             <div class="carrito-vacio" id="carrito-vacio">
-                <p>🛍️ Tu carrito está vacío</p>
+                <p>Tu carrito está vacío</p>
                 <p class="sugerencia">¡Explora nuestro menú y agrega los productos que más te gusten!</p>
             </div>
 
@@ -148,7 +203,7 @@
                         <p class="total-monto" id="total-pago">$0</p>
                     </div>
                     <button onclick="vaciarCarrito()" class="btn-secundario">
-                        <span class="icon">🗑️</span> Vaciar Carrito
+                        Vaciar Carrito
                     </button>
                 </div>
             </div>
@@ -230,7 +285,7 @@
                         </ul>
                         <div class="contacto">
                             <p>📞 (249) 123-4567</p>
-                            <p>📧 hola@tafecafe.com</p>
+                            <p>📧 contacto@tafecafe.com</p>
                             <p>📍 Centro de Tandil</p>
                         </div>
                     </div>
@@ -242,14 +297,17 @@
                 <div class="equipo-grid">
                     <div class="miembro">
                         <span class="rol">Barista Principal</span>
-                        <p>Especialista en café de especialidad, certificado por la Asociación de Cafés Especiales.</p>
+                        <h4>Pilar Bertani</h4>
+                        <p>Especialista en café de especialidad, certificada por la Asociación de Cafés Especiales.</p>
                     </div>
                     <div class="miembro">
                         <span class="rol">Chef Pastelero</span>
-                        <p>Formado en el Instituto de Gastronomía de Buenos Aires, experto en pastelería artesanal.</p>
+                        <h4>Paloma Cortes</h4>
+                        <p>Formada en el Instituto de Gastronomía de Buenos Aires, experta en pastelería artesanal.</p>
                     </div>
                     <div class="miembro">
                         <span class="rol">Chef Ejecutivo</span>
+                        <h4>Joaquín Rodríguez</h4>
                         <p>Con experiencia en restaurantes de primer nivel, especialista en cocina saludable.</p>
                     </div>
                 </div>

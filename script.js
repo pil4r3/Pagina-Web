@@ -48,9 +48,49 @@ const productos = {
     ]
 };
 
-// Estado del carrito
+// Variables globales
 let carrito = [];
+let total = 0;
 let categoriaActual = 'cafe';
+
+// Productos disponibles (simulación de base de datos)
+const PRODUCTOS = {
+    1: { nombre: 'Café', precio: 500 },
+    2: { nombre: 'Café con Leche', precio: 600 },
+    3: { nombre: 'Lágrima', precio: 550 },
+    4: { nombre: 'Cortado', precio: 550 },
+    10: { nombre: 'Medialuna', precio: 250 },
+    13: { nombre: 'Alfajor Artesanal', precio: 450 },
+    20: { nombre: 'Tostado J&Q', precio: 1000 }
+};
+
+// Definición de combos
+const COMBOS = {
+    desayuno: {
+        nombre: 'Desayuno Express',
+        items: [
+            { id: 1, cantidad: 1, nombre: 'Café' },
+            { id: 10, cantidad: 2, nombre: 'Medialuna' }
+        ],
+        precio: 900
+    },
+    merienda: {
+        nombre: 'Merienda Completa',
+        items: [
+            { id: 2, cantidad: 1, nombre: 'Café con Leche' },
+            { id: 20, cantidad: 1, nombre: 'Tostado J&Q' }
+        ],
+        precio: 1500
+    },
+    break: {
+        nombre: 'Break Dulce',
+        items: [
+            { id: 3, cantidad: 1, nombre: 'Lágrima' },
+            { id: 13, cantidad: 1, nombre: 'Alfajor Artesanal' }
+        ],
+        precio: 850
+    }
+};
 
 // Función para mostrar productos según la categoría
 function filtrarProductos(categoria) {
@@ -88,24 +128,67 @@ function actualizarContadorItems() {
     }
 }
 
+// Función para obtener producto completo del catálogo
+function obtenerProducto(id) {
+    for (let categoria in productos) {
+        const producto = productos[categoria].find(p => p.id === id);
+        if (producto) return producto;
+    }
+    return null;
+}
+
 // Función para agregar productos al carrito
-function agregarAlCarrito(id) {
-    let producto;
-    for (let cat in productos) {
-        producto = productos[cat].find(p => p.id === id);
-        if (producto) break;
+function agregarAlCarrito(productoId) {
+    const producto = obtenerProducto(productoId);
+    if (!producto) return;
+
+    // Buscar si el producto ya está en el carrito
+    const itemExistente = carrito.find(item => item.id === productoId);
+
+    if (itemExistente) {
+        itemExistente.cantidad++;
+    } else {
+        carrito.push({
+            id: productoId,
+            nombre: producto.nombre,
+            precio: producto.precio,
+            tiempo: producto.tiempo,
+            cantidad: 1
+        });
     }
-    
-    if (producto) {
-        const itemExistente = carrito.find(item => item.id === id);
-        if (itemExistente) {
-            itemExistente.cantidad++;
-        } else {
-            carrito.push({ ...producto, cantidad: 1 });
+
+    actualizarCarrito();
+    mostrarNotificacion(`${producto.nombre} agregado al carrito`);
+}
+
+// Función para agregar un combo al carrito
+function agregarCombo(comboId) {
+    const combo = COMBOS[comboId];
+    if (!combo) return;
+
+    // Agregamos cada item del combo al carrito
+    combo.items.forEach(item => {
+        for (let i = 0; i < item.cantidad; i++) {
+            const producto = obtenerProducto(item.id);
+            if (producto) {
+                const itemExistente = carrito.find(cartItem => cartItem.id === item.id);
+                if (itemExistente) {
+                    itemExistente.cantidad++;
+                } else {
+                    carrito.push({
+                        id: item.id,
+                        nombre: producto.nombre,
+                        precio: producto.precio,
+                        tiempo: producto.tiempo,
+                        cantidad: 1
+                    });
+                }
+            }
         }
-        actualizarCarrito();
-        actualizarContadorItems();
-    }
+    });
+
+    actualizarCarrito();
+    mostrarNotificacion(`¡${combo.nombre} agregado al carrito!`);
 }
 
 // Función para actualizar la vista del carrito
@@ -145,8 +228,10 @@ function actualizarCarrito() {
     document.getElementById('total-pago').textContent = `$${total}`;
     
     // Actualizar tiempo de preparación estimado
-    const tiempoMaxPreparacion = Math.max(...carrito.map(item => item.tiempo));
-    document.getElementById('tiempo-preparacion').textContent = tiempoMaxPreparacion;
+    const tiempoMaxPreparacion = Math.max(...carrito.map(item => item.tiempo || 0));
+    if (tiempoMaxPreparacion > 0) {
+        document.getElementById('tiempo-preparacion').textContent = tiempoMaxPreparacion;
+    }
 }
 
 // Función para eliminar items del carrito
@@ -168,6 +253,7 @@ function vaciarCarrito() {
     carrito = [];
     actualizarCarrito();
     actualizarContadorItems();
+    mostrarNotificacion('Carrito vaciado');
 }
 
 // Función para mostrar/ocultar el carrito en móviles
@@ -199,6 +285,7 @@ document.getElementById('form-pedido').addEventListener('submit', function(e) {
         return;
     }
     
+    const formulario = this;
     const nombre = document.getElementById('nombreCliente').value;
     const hora = document.getElementById('horaRetiro').value;
     
@@ -221,7 +308,23 @@ document.getElementById('form-pedido').addEventListener('submit', function(e) {
     // Mostrar confirmación y limpiar carrito
     mostrarConfirmacion(nombre, hora, tiempoMaxPreparacion);
     vaciarCarrito();
+    
+    // Limpiar el formulario
+    formulario.reset();
 });
+
+// Función para mostrar notificaciones
+function mostrarNotificacion(mensaje) {
+    const notificacion = document.createElement('div');
+    notificacion.className = 'notificacion';
+    notificacion.textContent = mensaje;
+    document.body.appendChild(notificacion);
+
+    // Removemos la notificación después de 3 segundos
+    setTimeout(() => {
+        notificacion.remove();
+    }, 3000);
+}
 
 // Inicializar la vista de productos y el contador
 document.addEventListener('DOMContentLoaded', () => {
