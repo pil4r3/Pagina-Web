@@ -1668,4 +1668,24 @@ button:hover {
   }
 }
 
+.footer {
+  background-color: #f3f3f3;
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+  color: #444;
+  border-top: 1px solid #ddd;
+}
+
+.footer-content p {
+  margin: 0.3rem 0;
+}
+
+.footer-contacto {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+
+
 
