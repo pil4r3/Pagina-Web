@@ -303,9 +303,27 @@ document.getElementById('form-pedido').addEventListener('submit', function(e) {
     }
     
     const formulario = this;
-    const nombre = document.getElementById('nombreCliente').value;
-    const hora = document.getElementById('horaRetiro').value;
-    
+    const nombreInput = document.getElementById('nombreCliente');
+    const horaInput = document.getElementById('horaRetiro');
+    const nombre = nombreInput.value.trim();
+    const hora = horaInput.value.trim();
+
+    // Validación visual
+    nombreInput.classList.remove('input-error');
+    horaInput.classList.remove('input-error');
+
+    if (nombre === '') {
+        nombreInput.classList.add('input-error');
+        mostrarNotificacion('Por favor ingresá tu nombre');
+        return;
+    }
+
+    if (hora === '') {
+        horaInput.classList.add('input-error');
+        mostrarNotificacion('Por favor ingresá una hora válida');
+        return;
+    }
+  
     // Calcular tiempo máximo de preparación
     const tiempoMaxPreparacion = Math.max(...carrito.map(item => item.tiempo));
     
@@ -348,4 +366,3 @@ document.addEventListener('DOMContentLoaded', () => {
     filtrarProductos('cafe');
     actualizarContadorItems();
 }); 
-
