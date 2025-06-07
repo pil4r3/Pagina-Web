@@ -53,7 +53,7 @@ let carrito = [];
 let total = 0;
 let categoriaActual = 'cafe';
 
-// Productos disponibles (simulación de base de datos)
+// Productos 
 const PRODUCTOS = {
     1: { nombre: 'Café', precio: 500 },
     2: { nombre: 'Café con Leche', precio: 600 },
@@ -298,7 +298,7 @@ document.getElementById('form-pedido').addEventListener('submit', function(e) {
     e.preventDefault();
     
     if (carrito.length === 0) {
-        mostrarNotificacion('Agrega productos a tu pedido');
+        mostrarNotificacion('Agregá productos a tu pedido');
         return;
     }
     
@@ -308,7 +308,6 @@ document.getElementById('form-pedido').addEventListener('submit', function(e) {
     const nombre = nombreInput.value.trim();
     const hora = horaInput.value.trim();
 
-    // Validación visual
     nombreInput.classList.remove('input-error');
     horaInput.classList.remove('input-error');
 
@@ -323,30 +322,37 @@ document.getElementById('form-pedido').addEventListener('submit', function(e) {
         mostrarNotificacion('Por favor ingresá una hora válida');
         return;
     }
-  
-    // Calcular tiempo máximo de preparación
-    const tiempoMaxPreparacion = Math.max(...carrito.map(item => item.tiempo));
-    
-    // Validar que la hora de retiro sea posterior al tiempo de preparación
-    const horaActual = new Date();
+
+    const [horas, minutos] = hora.split(':').map(Number);
     const horaRetiro = new Date();
-    const [horas, minutos] = hora.split(':');
-    horaRetiro.setHours(horas, minutos);
-    
+    horaRetiro.setHours(horas, minutos, 0, 0);
+
+    const diaSemana = horaRetiro.getDay(); // 0 = domingo, 6 = sábado
+    const horaNum = horas + minutos / 60;
+
+    const estaAbierto =
+        (diaSemana >= 1 && diaSemana <= 5 && horaNum >= 7 && horaNum < 20) || // Lunes a viernes
+        (diaSemana === 6 && horaNum >= 8 && horaNum < 14);                    // Sábados
+
+    if (!estaAbierto) {
+        mostrarNotificacion('⛔ En este horario no estamos trabajando. ¡Te esperamos en nuestros horarios habituales!');
+        return;
+    }
+
+    const tiempoMaxPreparacion = Math.max(...carrito.map(item => item.tiempo));
+    const horaActual = new Date();
     const tiempoMinimo = new Date(horaActual.getTime() + tiempoMaxPreparacion * 60000);
-    
+
     if (horaRetiro < tiempoMinimo) {
         mostrarNotificacion(`El tiempo mínimo de preparación es de ${tiempoMaxPreparacion} minutos`);
         return;
     }
-    
-    // Mostrar confirmación y limpiar carrito
+
     mostrarConfirmacion(nombre, hora, tiempoMaxPreparacion);
     vaciarCarrito();
-    
-    // Limpiar el formulario
     formulario.reset();
 });
+
 
 // Función para mostrar notificaciones
 function mostrarNotificacion(mensaje) {
