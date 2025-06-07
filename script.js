@@ -33,7 +33,9 @@ const productos = {
         { id: 22, nombre: 'Sándwich de Pollo', precio: 1300, tiempo: 7, descripcion: 'Pollo grillado, lechuga, tomate, mayonesa' },
         { id: 23, nombre: 'Club Sándwich', precio: 1400, tiempo: 8, descripcion: 'Pollo, jamón, huevo, lechuga, tomate, panceta' },
         { id: 24, nombre: 'Sándwich Vegetariano', precio: 1200, tiempo: 7, descripcion: 'Berenjenas, zucchini, morrón asado, hummus' },
-        { id: 25, nombre: 'Sándwich Caprese', precio: 1100, tiempo: 6, descripcion: 'Tomate, mozzarella, albahaca, aceite de oliva' }
+        { id: 25, nombre: 'Sándwich Caprese', precio: 1100, tiempo: 6, descripcion: 'Tomate, mozzarella, albahaca, aceite de oliva' },
+        { id: 33, nombre: 'Tostado J&Q', precio: 1000, tiempo: 5, descripcion: 'Jamón y queso caliente en pan de campo' }
+
     ],
     wraps: [
         { id: 26, nombre: 'Wrap de Pollo', precio: 1200, tiempo: 7, descripcion: 'Pollo, lechuga, tomate, queso crema' },
@@ -61,7 +63,7 @@ const PRODUCTOS = {
     4: { nombre: 'Cortado', precio: 550 },
     10: { nombre: 'Medialuna', precio: 250 },
     13: { nombre: 'Alfajor Artesanal', precio: 450 },
-    20: { nombre: 'Tostado J&Q', precio: 1000 }
+    33: { nombre: 'Tostado J&Q', precio: 1000 }
 };
 
 // Definición de combos
@@ -78,7 +80,7 @@ const COMBOS = {
         nombre: 'Merienda Completa',
         items: [
             { id: 2, cantidad: 1, nombre: 'Café con Leche' },
-            { id: 20, cantidad: 1, nombre: 'Tostado J&Q' }
+            { id: 33, cantidad: 1, nombre: 'Tostado J&Q' }
         ],
         precio: 1500
     },
